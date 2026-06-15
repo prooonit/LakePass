@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes.js";
+import marinaRoutes from "./routes/marina.routes.js";
+import { errorHandler } from "./middleware/error.middleware.js";
 
 const app = express();
 
@@ -12,6 +14,9 @@ app.use(
 );
 app.use(express.json());
 
-app.use("/api/auth", authRoutes);
+app.use("/auth", authRoutes);
+app.use("/marinas", marinaRoutes);
+
+app.use(errorHandler);
 
 export default app;

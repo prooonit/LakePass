@@ -11,53 +11,80 @@ enum AuthProvider {
   GOOGLE
 }
 
-
-
 enum MarinaRole {
   OWNER
-  ADMIN
-  MEMBER
+  MANAGER
+  STAFF
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  CANCELLED
 }
 
 model User {
-  id           String   @id @default(uuid())
+  id           String       @id @default(uuid())
   name         String
-  email        String   @unique
+  email        String       @unique
   passwordHash String?
-  googleId     String?  @unique
+  googleId     String?      @unique
   avatarUrl    String?
   authProvider AuthProvider @default(EMAIL)
 
-  memberships  MarinaMember[]
+  memberships       MarinaMember[]
+  marinaInvitations MarinaInvitation[]
 
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Marina {
-  id          String   @id @default(uuid())
+  id          String @id @default(uuid())
   name        String
-  slug        String   @unique
+  slug        String @unique
   ownerUserId String
 
   memberships MarinaMember[]
+  invitations MarinaInvitation[]
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model MarinaMember {
-  id        String @id @default(uuid())
+  id String @id @default(uuid())
 
-  marinaId  String
-  userId    String
+  marinaId String
+  userId   String
 
-  role      MarinaRole
+  role MarinaRole
 
-  marina    Marina @relation(fields: [marinaId], references: [id])
-  user      User   @relation(fields: [userId], references: [id])
+  marina Marina @relation(fields: [marinaId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
 
   createdAt DateTime @default(now())
 
   @@unique([marinaId, userId])
+}
+
+model MarinaInvitation {
+  id String @id @default(uuid())
+
+  marinaId         String
+  email            String
+  role             MarinaRole
+  status           InvitationStatus @default(PENDING)
+  invitedByUserId  String
+  acceptedByUserId String?
+  acceptedAt       DateTime?
+
+  marina    Marina @relation(fields: [marinaId], references: [id])
+  invitedBy User   @relation(fields: [invitedByUserId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([marinaId])
 }

@@ -56,7 +56,7 @@ function App() {
     setMessage("");
 
     try {
-      const result = await fetch(`${apiUrl}/api/auth/google`, {
+      const result = await fetch(`${apiUrl}/auth/google/callback`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
