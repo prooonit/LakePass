@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes.js";
 import marinaRoutes from "./routes/marina.routes.js";
+import boatRoutes from "./routes/boat.routes.js";
 import { errorHandler } from "./middleware/error.middleware.js";
 
 const app = express();
@@ -15,7 +16,8 @@ app.use(
 app.use(express.json());
 
 app.use("/auth", authRoutes);
-app.use("/marinas", marinaRoutes);
+app.use("/marinas", marinaRoutes ,boatRoutes);
+
 
 app.use(errorHandler);
 

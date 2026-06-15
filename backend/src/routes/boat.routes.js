@@ -17,7 +17,7 @@ import {
 const router = express.Router();
 
 router.post(
-  "/marinas/:slug/boats",
+  "/:slug/boats",
   authenticate,
   loadMarinaMembership("slug"),
   authorizeRoles("OWNER", "MANAGER"),
@@ -25,7 +25,7 @@ router.post(
 );
 
 router.get(
-  "/marinas/:slug/boats",
+  "/:slug/boats",
   authenticate,
   loadMarinaMembership("slug"),
   authorizeRoles("OWNER", "MANAGER", "STAFF"),
@@ -33,7 +33,7 @@ router.get(
 );
 
 router.get(
-  "/marinas/:slug/boats/:boatId",
+  "/:slug/boats/:boatId",
   authenticate,
   loadMarinaMembership("slug"),
   authorizeRoles("OWNER", "MANAGER", "STAFF"),
@@ -41,7 +41,7 @@ router.get(
 );
 
 router.put(
-  "/marinas/:slug/boats/:boatId",
+  "/:slug/boats/:boatId",
   authenticate,
   loadMarinaMembership("slug"),
   authorizeRoles("OWNER", "MANAGER"),
@@ -49,7 +49,7 @@ router.put(
 );
 
 router.delete(
-  "/marinas/:slug/boats/:boatId",
+  "/:slug/boats/:boatId",
   authenticate,
   loadMarinaMembership("slug"),
   authorizeRoles("OWNER"),
