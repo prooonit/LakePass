@@ -8,9 +8,7 @@ router.use(authenticate);
 
 router.post("/", createMarinaController);
 router.get("/my", getMyMarinasController);
-router.get("/help",(req,res)=>{
-  res.json({message:"This is a help endpoint for marinas"});
-});
+
 
 router.post(
   "/:marinaId/invite",

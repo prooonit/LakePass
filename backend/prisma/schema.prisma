@@ -23,6 +23,21 @@ enum InvitationStatus {
   CANCELLED
 }
 
+enum BoatType {
+  YACHT
+  PONTOON
+  SPEED_BOAT
+  FISHING_BOAT
+  JET_SKI
+  OTHER
+}
+
+enum BoatStatus {
+  ACTIVE
+  MAINTENANCE
+  INACTIVE
+}
+
 model User {
   id           String       @id @default(uuid())
   name         String
@@ -47,6 +62,8 @@ model Marina {
 
   memberships MarinaMember[]
   invitations MarinaInvitation[]
+
+  boats Boat[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -87,4 +104,32 @@ model MarinaInvitation {
 
   @@index([email])
   @@index([marinaId])
+}
+
+model Boat {
+  id String @id @default(uuid())
+
+  marinaId String
+
+  name String
+
+  boatCode String @unique
+
+  description String?
+
+  type BoatType
+
+  capacity Int
+
+  hourlyRate Decimal @db.Decimal(10, 2)
+
+  status BoatStatus @default(ACTIVE)
+
+  marina Marina @relation(fields: [marinaId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([marinaId])
+  @@index([type])
 }

@@ -42,18 +42,33 @@ export const authenticate = async (req, _res, next) => {
   }
 };
 
-export const loadMarinaMembership = (paramName = "marinaId") => async (req, _res, next) => {
+export const loadMarinaMembership = (paramName = "slug") => async (req, _res, next) => {
   try {
-    const marinaId = req.params[paramName];
+    const slug = req.params[paramName];
 
-    if (!marinaId) {
-      throw new ApiError(400, "marinaId is required");
+    if (!slug) {
+      throw new ApiError(400, "Marina slug is required");
+    }
+
+    const marina = await prisma.marina.findUnique({
+      where: {
+        slug,
+      },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+      },
+    });
+
+    if (!marina) {
+      throw new ApiError(404, "Marina not found");
     }
 
     const membership = await prisma.marinaMember.findUnique({
       where: {
         marinaId_userId: {
-          marinaId,
+          marinaId: marina.id,
           userId: req.user.id,
         },
       },
@@ -69,10 +84,13 @@ export const loadMarinaMembership = (paramName = "marinaId") => async (req, _res
     }
 
     req.marina = {
-      id: membership.marinaId,
+      id: marina.id,
+      slug: marina.slug,
+      name: marina.name,
       role: membership.role,
       membershipId: membership.id,
     };
+
     next();
   } catch (error) {
     next(error);
