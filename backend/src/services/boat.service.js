@@ -105,3 +105,51 @@ export const deactivateBoat = async (
     },
   });
 };
+
+export const searchBoats = async (query) => {
+  const {
+    type,
+    capacity,
+    minPrice,
+    maxPrice,
+  } = query;
+
+  return prisma.boat.findMany({
+    where: {
+      status: "ACTIVE",
+
+      ...(type && {
+        type,
+      }),
+
+      ...(capacity && {
+        capacity: {
+          gte: Number(capacity),
+        },
+      }),
+
+      ...(minPrice || maxPrice
+        ? {
+            hourlyRate: {
+              ...(minPrice && {
+                gte: Number(minPrice),
+              }),
+              ...(maxPrice && {
+                lte: Number(maxPrice),
+              }),
+            },
+          }
+        : {}),
+    },
+
+    include: {
+      marina: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+        },
+      },
+    },
+  });
+};

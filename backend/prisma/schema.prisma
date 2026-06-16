@@ -38,6 +38,15 @@ enum BoatStatus {
   INACTIVE
 }
 
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CHECKED_IN
+  CHECKED_OUT
+  COMPLETED
+  CANCELLED
+}
+
 model User {
   id           String       @id @default(uuid())
   name         String
@@ -49,6 +58,8 @@ model User {
 
   memberships       MarinaMember[]
   marinaInvitations MarinaInvitation[]
+
+  bookings Booking[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -127,9 +138,36 @@ model Boat {
 
   marina Marina @relation(fields: [marinaId], references: [id])
 
+  bookings Booking[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([marinaId])
   @@index([type])
+}
+
+model Booking {
+  id String @id @default(uuid())
+
+  boatId String
+  userId String
+
+  startTime DateTime
+  endTime   DateTime
+
+  totalPrice Decimal @db.Decimal(10, 2)
+
+  status BookingStatus @default(PENDING)
+
+  boat Boat @relation(fields: [boatId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([boatId])
+  @@index([userId])
+  @@index([startTime])
+  @@index([endTime])
 }

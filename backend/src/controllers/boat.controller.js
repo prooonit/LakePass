@@ -80,3 +80,16 @@ export const deactivateBoat = async (req, res, next) => {
     next(error);
   }
 };
+
+export const searchBoats = async (req, res, next) => {
+  try {
+    const boats = await boatService.searchBoats(req.query);
+
+    res.json({
+      success: true,
+      data: boats,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
