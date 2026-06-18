@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { useAuth } from "../context/AuthContext";
 
 const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+console.log("Google Client ID:", googleClientId);
 
 export default function LoginPage() {
   const buttonRef = useRef(null);
