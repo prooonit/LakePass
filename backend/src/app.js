@@ -4,6 +4,7 @@ import authRoutes from "./routes/auth.routes.js";
 import marinaRoutes from "./routes/marina.routes.js";
 import boatRoutes from "./routes/boat.routes.js";
 import bookingRoutes from "./routes/booking.routes.js";
+import paymentRoutes from "./routes/payment.routes.js";
 import { errorHandler } from "./middleware/error.middleware.js";
 
 const app = express();
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use("/auth", authRoutes);
 app.use("/marinas", marinaRoutes ,boatRoutes);
 app.use("/booking", bookingRoutes);
+app.use("/payment", paymentRoutes);
 
 app.use(errorHandler);
 

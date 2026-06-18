@@ -25,7 +25,7 @@ export const getMyMarinasController = asyncHandler(async (req, res) => {
 });
 
 export const inviteMemberController = asyncHandler(async (req, res) => {
-  const invitation = await inviteMember(req.user.id, req.params.marinaId, req.body || {});
+  const invitation = await inviteMember(req.user.id, req.marina.id, req.body || {});
 
   return res.status(201).json({
     success: true,
@@ -35,7 +35,7 @@ export const inviteMemberController = asyncHandler(async (req, res) => {
 
 
 export const getMarinaMembersController = asyncHandler(async (req, res) => {
-  const members = await getMarinaMembers(req.params.marinaId);
+  const members = await getMarinaMembers(req.marina.id);
 
   return res.status(200).json({
     success: true,

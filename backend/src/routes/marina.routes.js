@@ -11,9 +11,9 @@ router.post("/", createMarinaController);
 router.get("/my", getMyMarinasController);
 
 
-router.post("/:marinaId/invite",loadMarinaMembership(),authorizeRoles("OWNER"),inviteMemberController,);
+router.post("/:slug/invite",loadMarinaMembership("slug"),authorizeRoles("OWNER"),inviteMemberController,);
 
-router.get("/:marinaId/members",loadMarinaMembership(),getMarinaMembersController,);
+router.get("/:slug/members",loadMarinaMembership("slug"),getMarinaMembersController,);
 
 router.get("/:slug/bookings",authenticate,loadMarinaMembership("slug"),authorizeRoles("OWNER", "MANAGER", "STAFF"),getMarinaBookings);
 

@@ -44,8 +44,9 @@ export const authenticate = async (req, _res, next) => {
 
 export const loadMarinaMembership = (paramName = "slug") => async (req, _res, next) => {
   try {
-    const slug = req.params[paramName];
 
+    const slug = req.params[paramName];
+   
     if (!slug) {
       throw new ApiError(400, "Marina slug is required");
     }

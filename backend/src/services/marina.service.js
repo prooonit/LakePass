@@ -125,7 +125,7 @@ export const inviteMember = async (invitedByUserId, marinaId, body) => {
     });
 
     return {
-      invitation: updatedInvitation,
+      invitation,
       membership,
     };
   });
