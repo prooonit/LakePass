@@ -1,6 +1,8 @@
 import axios from "axios";
 
 export const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+console.log("API_URL =", API_URL);
+console.log("RAW =", import.meta.env.VITE_API_URL);
 export const SESSION_KEY = "lakepass_session";
 
 export const getStoredSession = () => {
