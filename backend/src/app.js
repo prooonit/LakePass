@@ -15,6 +15,7 @@ app.use(
     credentials: true,
   })
 );
+console.log("CORS configured with origin:", process.env.FRONTEND_URL || "http://localhost:5173");
 app.use(express.json());
 
 app.use("/auth", authRoutes);
