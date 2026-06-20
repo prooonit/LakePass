@@ -10,7 +10,7 @@ router.post("/:slug/boats",authenticate,loadMarinaMembership("slug"),authorizeRo
 
 router.get("/:slug/boats",authenticate,loadMarinaMembership("slug"),authorizeRoles("OWNER", "MANAGER", "STAFF"),getMarinaBoats);
 
-router.get("/:slug/boats/:boatId",authenticate,loadMarinaMembership("slug"),authorizeRoles("OWNER", "MANAGER", "STAFF"),getBoatById);
+router.get("/:slug/boats/:boatId",authenticate,loadMarinaMembership("slug"),getBoatById);
 
 router.put("/:slug/boats/:boatId",authenticate,loadMarinaMembership("slug"),authorizeRoles("OWNER", "MANAGER"),updateBoat);
 
