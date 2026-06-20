@@ -33,6 +33,20 @@ export const getMyBookings = async (req,res,next) => {
   }
 };
 
+export const getBoatAvailability = async (req,res,next) => {
+  try {
+    const availability =
+      await bookingService.getBoatAvailability(
+        req.params.boatId,
+        req.query
+      );
+
+    res.json(availability);
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 export const getMarinaBookings = async (req,res,next) => {
   try {

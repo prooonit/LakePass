@@ -23,7 +23,7 @@ app.use(express.json());
 
 app.use("/auth", authRoutes);
 app.use("/marinas", marinaRoutes ,boatRoutes);
-app.use("/booking", bookingRoutes);
+app.use("/", bookingRoutes);
 app.use("/payment", paymentRoutes);
 
 app.use(errorHandler);

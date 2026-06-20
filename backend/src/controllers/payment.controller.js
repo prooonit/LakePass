@@ -1,5 +1,5 @@
 import Stripe from "stripe";
-import prisma from "../config/prisma.js";
+import * as bookingService from "../services/booking.service.js";
 import * as paymentService from "../services/payment.service.js";
 
 
@@ -28,16 +28,10 @@ export const stripeWebhook = async (req, res) => {
 
     const bookingId = session.metadata.bookingId;
 
-    await prisma.booking.update({
-      where: {
-        id: bookingId,
-      },
-      data: {
-        status: "CONFIRMED",
-        paymentStatus: "PAID",
-        stripePaymentIntentId: session.payment_intent,
-      },
-    });
+    await bookingService.confirmPaidBooking(
+      bookingId,
+      session.payment_intent
+    );
 
     console.log("Booking confirmed:", bookingId);
   }
