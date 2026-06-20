@@ -93,3 +93,34 @@ export const searchBoats = async (req, res, next) => {
     next(error);
   }
 };
+
+
+export const getAllBoats = async (req,res,next) => {
+  try {
+    const boats =
+      await boatService.getAllBoats();
+
+    res.status(200).json({
+      success: true,
+      data: boats,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getBoatDetails = async (req,res,next) => {
+  try {
+    const boat =
+      await boatService.getBoatDetails(
+        req.params.boatId
+      );
+
+    res.status(200).json({
+      success: true,
+      data: boat,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

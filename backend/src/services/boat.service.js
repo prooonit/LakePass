@@ -153,3 +153,52 @@ export const searchBoats = async (query) => {
     },
   });
 };
+
+
+export const getAllBoats = async () => {
+  const boats = await prisma.boat.findMany({
+    where: {
+      status: "ACTIVE",
+    },
+
+    include: {
+      marina: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+        },
+      },
+    },
+
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return boats;
+};
+
+export const getBoatDetails = async (boatId) => {
+  const boat = await prisma.boat.findUnique({
+    where: {
+      id: boatId,
+    },
+
+    include: {
+      marina: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+        },
+      },
+    },
+  });
+
+  if (!boat) {
+    throw new ApiError(404, "Boat not found");
+  }
+
+  return boat;
+};

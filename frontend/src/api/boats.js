@@ -5,6 +5,16 @@ export const searchBoats = async (params = {}) => {
   return unwrap(response);
 };
 
+export const getAllBoats = async () => {
+  const response = await api.get("/marinas/boats");
+  return unwrap(response);
+};
+
+export const getBoatDetails = async (boatId) => {
+  const response = await api.get(`/marinas/boats/${boatId}`);
+  return unwrap(response);
+};
+
 export const getBoatById = async (slug, boatId) => {
   const response = await api.get(`/marinas/${slug}/boats/${boatId}`);
   return unwrap(response);

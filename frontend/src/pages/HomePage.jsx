@@ -16,16 +16,33 @@ const boatTypes = ["YACHT", "PONTOON", "SPEED_BOAT", "FISHING_BOAT", "JET_SKI", 
 
 export default function HomePage() {
   const [boats, setBoats] = useState([]);
+  const [allBoats, setAllBoats] = useState([]);
   const [filters, setFilters] = useState(initialFilters);
   const [loading, setLoading] = useState(true);
 
-  const loadBoats = async (nextFilters = filters) => {
+  const applyFilters = (items, nextFilters) => {
+    return items.filter((boat) => {
+      const hourlyRate = Number(boat.hourlyRate);
+      const capacity = Number(boat.capacity);
+
+      return (
+        (!nextFilters.type || boat.type === nextFilters.type) &&
+        (!nextFilters.capacity || capacity >= Number(nextFilters.capacity)) &&
+        (!nextFilters.minPrice || hourlyRate >= Number(nextFilters.minPrice)) &&
+        (!nextFilters.maxPrice || hourlyRate <= Number(nextFilters.maxPrice))
+      );
+    });
+  };
+
+  const loadBoats = async () => {
     setLoading(true);
 
     try {
-      const params = Object.fromEntries(Object.entries(nextFilters).filter(([, value]) => value));
-      const data = await boatApi.searchBoats(params);
-      setBoats(Array.isArray(data) ? data : []);
+      const data = await boatApi.getAllBoats();
+      const items = Array.isArray(data) ? data : [];
+
+      setAllBoats(items);
+      setBoats(applyFilters(items, initialFilters));
     } catch (error) {
       toast.error(error.message);
     } finally {
@@ -34,7 +51,7 @@ export default function HomePage() {
   };
 
   useEffect(() => {
-    loadBoats(initialFilters);
+    loadBoats();
   }, []);
 
   const updateFilter = (key, value) => {
@@ -43,7 +60,7 @@ export default function HomePage() {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    loadBoats(filters);
+    setBoats(applyFilters(allBoats, filters));
   };
 
   return (

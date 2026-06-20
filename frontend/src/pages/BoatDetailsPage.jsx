@@ -8,6 +8,15 @@ import * as paymentApi from "../api/payments";
 import LoadingSpinner from "../components/LoadingSpinner";
 import StatusBadge from "../components/StatusBadge";
 
+const images = {
+  YACHT: "https://images.unsplash.com/photo-1569263979104-865ab7cd8d13?auto=format&fit=crop&w=1600&q=80",
+  PONTOON: "https://images.unsplash.com/photo-1502784444187-359ac186c5bb?auto=format&fit=crop&w=1600&q=80",
+  SPEED_BOAT: "https://images.unsplash.com/photo-1528154291023-a6525fabe5b4?auto=format&fit=crop&w=1600&q=80",
+  FISHING_BOAT: "https://images.unsplash.com/photo-1510407857691-180bc78628cb?auto=format&fit=crop&w=1600&q=80",
+  JET_SKI: "https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=1600&q=80",
+  OTHER: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1600&q=80",
+};
+
 export default function BoatDetailsPage() {
   const { boatId } = useParams();
   const [searchParams] = useSearchParams();
@@ -22,12 +31,11 @@ export default function BoatDetailsPage() {
       setLoading(true);
 
       try {
-        if (marinaSlug) {
-          setBoat(await boatApi.getBoatById(marinaSlug, boatId));
-        } else {
-          const boats = await boatApi.searchBoats();
-          setBoat(boats.find((item) => item.id === boatId) || null);
-        }
+        setBoat(
+          marinaSlug
+            ? await boatApi.getBoatById(marinaSlug, boatId)
+            : await boatApi.getBoatDetails(boatId)
+        );
       } catch (error) {
         toast.error(error.message);
       } finally {
@@ -99,7 +107,7 @@ export default function BoatDetailsPage() {
         <section>
           <div className="overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-stone-200">
             <img
-              src="https://images.unsplash.com/photo-1569263979104-865ab7cd8d13?auto=format&fit=crop&w=1600&q=80"
+              src={images[boat.type] || images.OTHER}
               alt=""
               className="h-[320px] w-full object-cover sm:h-[440px]"
             />
@@ -108,7 +116,7 @@ export default function BoatDetailsPage() {
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
                 <h1 className="text-3xl font-black text-stone-950 sm:text-4xl">{boat.name}</h1>
-                <p className="mt-2 text-stone-600">{boat.marina?.name || "Lake Pass marina"} · {boat.type?.replaceAll("_", " ")}</p>
+                <p className="mt-2 text-stone-600">{boat.marina?.name || "Lake Pass marina"} - {boat.type?.replaceAll("_", " ")}</p>
               </div>
               <StatusBadge status={boat.status} />
             </div>

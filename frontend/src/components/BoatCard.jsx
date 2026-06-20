@@ -12,11 +12,8 @@ const images = {
 };
 
 export default function BoatCard({ boat }) {
-  const marinaSlug = boat.marina?.slug || boat.marinaSlug;
-  const href = marinaSlug ? `/boats/${boat.id}?marina=${marinaSlug}` : `/boats/${boat.id}`;
-
   return (
-    <Link to={href} className="group block overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-stone-200 transition hover:-translate-y-0.5 hover:shadow-soft">
+    <Link to={`/boats/${boat.id}`} className="group block overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-stone-200 transition hover:-translate-y-0.5 hover:shadow-soft">
       <div className="aspect-[4/3] overflow-hidden bg-stone-200">
         <img
           src={images[boat.type] || images.OTHER}

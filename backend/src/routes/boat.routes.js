@@ -2,7 +2,7 @@ import express from "express";
 
 import {authenticate,loadMarinaMembership,authorizeRoles,} from "../middleware/auth.middleware.js";
 
-import {createBoat,getMarinaBoats,getBoatById,updateBoat,deactivateBoat,searchBoats,} from "../controllers/boat.controller.js";
+import {createBoat,getMarinaBoats,getBoatById,updateBoat,deactivateBoat,searchBoats,getAllBoats, getBoatDetails} from "../controllers/boat.controller.js";
 
 const router = express.Router();
 
@@ -16,8 +16,12 @@ router.put("/:slug/boats/:boatId",authenticate,loadMarinaMembership("slug"),auth
 
 router.delete("/:slug/boats/:boatId",authenticate,loadMarinaMembership("slug"),authorizeRoles("OWNER"),deactivateBoat);
 
+/**
+ * Customer side routes are here:
+ */
+router.get("/boats", authenticate, getAllBoats);
 
-
+router.get("/boats/:boatId", authenticate, getBoatDetails);
 /**
  * Searching routes are here:
  */
