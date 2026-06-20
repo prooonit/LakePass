@@ -75,7 +75,7 @@ export const createBooking = async (userId,payload) => {
 
       totalPrice,
 
-      status: "CONFIRMED",
+      status: "PENDING",
     },
 
     include: {
