@@ -8,7 +8,10 @@ import paymentRoutes from "./routes/payment.routes.js";
 import { errorHandler } from "./middleware/error.middleware.js";
 
 const app = express();
-
+app.use(
+  "/payment/webhook",
+  express.raw({ type: "application/json" })
+);
 app.use(
   cors({
     origin: process.env.FRONTEND_URL || "http://localhost:5173",
