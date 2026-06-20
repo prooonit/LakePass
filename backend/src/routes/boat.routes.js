@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.post("/:slug/boats",authenticate,loadMarinaMembership("slug"),authorizeRoles("OWNER", "MANAGER"),createBoat);
 
-router.get("/:slug/boats",authenticate,loadMarinaMembership("slug"),authorizeRoles("OWNER", "MANAGER", "STAFF"),getMarinaBoats);
+router.get("/:slug/boats",authenticate,loadMarinaMembership("slug"),getMarinaBoats);
 
 router.get("/:slug/boats/:boatId",authenticate,loadMarinaMembership("slug"),getBoatById);
 
